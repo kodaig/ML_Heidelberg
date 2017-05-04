@@ -19,6 +19,19 @@
 
 \maketitle
 
+\section{Iterated Conditional Models}
+
+The missing code is:
+
+\begin{verbatim}
+# unary terms
+energy += unaries[x0,x1,l]
+
+# pairwise terms
+energy += 4 - [labels[x0-1,x1], labels[x0+1,x1],
+            labels[x0,x1-1], labels[x0,x1+1]].count(l)
+\end{verbatim}
+
 \section{Higher order factors}
 The domain of $x_z$ is ${0,1,2,3,4,5,6,7}$. Each variable value represents one energy state. The pairwise factors are given in the following table:
 

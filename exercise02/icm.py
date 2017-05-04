@@ -29,8 +29,8 @@ def iterated_conditonal_modes(unaries, beta, labels = None):
                     energy += unaries[x0,x1,l]
 
                     # pairwise terms
-                    energy += [labels[x0-1,x1], labels[x0+1,x1],
-                                labels[x0,x1-1], labels[x0,x1+1]].count(l)
+                    energy += 4 - [labels[x0-1,x1], labels[x0+1,x1],
+                                    labels[x0,x1-1], labels[x0,x1+1]].count(l)
 
                     if energy < min_energy:
                         min_energy = energy
