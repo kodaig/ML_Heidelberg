@@ -1,0 +1,54 @@
+\documentclass[12pt,a4paper]{scrartcl}
+
+\input{../common/header.tex}
+
+\author{Kodai Matsuoke, Yuyan Li}
+\subject{Machine Learning for Computer Vision}
+\title{Exercise 2}
+% \subtitle{}
+\date{May 5, 2017}
+
+\usepackage{expl3}
+\ExplSyntaxOn
+\cs_new_eq:NN \Repeat \prg_replicate:nn
+\ExplSyntaxOff
+
+\newcommand{\infrow}[1]{\multicolumn{#1}{c}{$\infty$}}
+
+\begin{document}
+
+\maketitle
+
+\section{Higher order factors}
+The domain of $x_z$ is ${0,1,2,3,4,5,6,7}$. Each variable value represents one energy state. The pairwise factors are given in the following table:
+
+\begin{tabular}{r|cccccccccccccccc}
+  \hline
+  $x_z$        & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 \\
+  $x_0$        & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 \\
+  \hline
+  $\phi_{0z}$  & a & b & c & d & \infrow{4}    & \infrow{4}    & e & f & g & h \\
+  \hline
+\end{tabular}
+\\
+\begin{tabular}{r|cccccccccccccccc}
+  \hline
+  $x_z$        & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 \\
+  $x_1$        & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 \\
+  \hline
+  $\phi_{1z}$  & 0 & 0 & \infrow{2} & 0 & 0 & \infrow{2} & \infrow{2} & 0 & 0 & \infrow{2} & 0 & 0 \\
+  \hline
+\end{tabular}
+
+\begin{tabular}{r|cccccccccccccccc}
+  \hline
+  $x_z$        & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 \\
+  $x_1$        & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 \\
+  \hline
+  $\phi_{1z}$  \Repeat{8}{& 0 & $\infty$} \\
+  \hline
+\end{tabular}
+
+\end{document}
+
+
