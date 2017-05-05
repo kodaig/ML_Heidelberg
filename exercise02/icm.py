@@ -72,9 +72,10 @@ if __name__ == "__main__":
     unaries = numpy.dstack((fg, bg))
 
     labels = iterated_conditonal_modes(unaries, beta=beta)
+    plt.imsave('label.png', labels)
 
-    # plt.imshow(labels)
-    # plt.show()
+    plt.imshow(labels)
+    plt.show()
 
     index = 0
     for p in pred:

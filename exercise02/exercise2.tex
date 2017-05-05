@@ -54,13 +54,17 @@ bg = 1.-p
 unaries = numpy.dstack((fg, bg))
 \end{verbatim}
 
-In the whole program (\textit{icm.py}) there is also an addition at the end to produce pictures of the labels. A few examples are shown here:
+In the whole program (\textit{icm.py}) there is also an addition at the end to produce pictures of the labels. One example is shown below. In the second row the first labeling is computed with $\beta=0.01$ and the second picture with $\beta=0.1$.
+In the next row it's $\beta=1.0$ and $\beta=10$.
 
-\includegraphics[width=.45\linewidth]{label0.png}
-\includegraphics[width=.45\linewidth]{label1.png}
+\includegraphics[width=.45\linewidth]{raw.jpg}
+\includegraphics[width=.45\linewidth]{pred.png}
 \\
-\includegraphics[width=.45\linewidth]{label2.png}
-\includegraphics[width=.45\linewidth]{label3.png}
+\includegraphics[width=.45\linewidth]{label_b001.png}
+\includegraphics[width=.45\linewidth]{label_b01.png}
+\\
+\includegraphics[width=.45\linewidth]{label_b1.png}
+\includegraphics[width=.45\linewidth]{label_b10.png}
 \\
 % \lstinputlisting[caption=icm.py,label=lst:icm]{icm.py}
 
