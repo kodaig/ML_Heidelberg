@@ -3,6 +3,7 @@ import numpy
 import os
 import glob
 import skimage.io
+from scipy import ndimage
 
 def iterated_conditonal_modes(unaries, beta, labels = None):
     shape = unaries.shape[0:2]
@@ -46,16 +47,47 @@ if __name__ == "__main__":
 
     shape = [100, 100]
     n_labels = 2
-    
-    # unaries
-    unaries = numpy.random.rand(shape[0], shape[1], n_labels )
-    pred_paths = glob.glob("predictions/*")
-    pred = [skimage.io.imread(f) for f in pred_paths]
 
     # regularizer strength
     beta = 0.01
 
+    # unaries
+    # unaries = numpy.random.rand(shape[0], shape[1], n_labels)
+
+    # import predictions from exercise1
+    # prediction images are in folder predictions/
+    pred_paths = glob.glob("predictions/*")
+    pred = [skimage.img_as_float(skimage.io.imread(f)) for 
+                f in pred_paths]
+
+    # Getting rid of the zeros
+    for x in numpy.nditer(pred[0], op_flags=['readwrite']):
+        if x == 0:
+            x[...] = 1e-100
+        if x == 1:
+            x[...] = 1. - 1e-16
+
+    fg = -numpy.log(pred[0])
+    bg = -numpy.log(1.-pred[0])
+    unaries = numpy.dstack((fg, bg))
+
     labels = iterated_conditonal_modes(unaries, beta=beta)
 
-    plt.imshow(labels)
-    plt.show()
+    # plt.imshow(labels)
+    # plt.show()
+
+    index = 0
+    for p in pred:
+        # Getting rid of zeros for the log
+        for x in numpy.nditer(p, op_flags=['readwrite']):
+            if x == 0:
+                x[...] = 1e-100
+            if x == 1:
+                x[...] = 1. - 1e-16
+
+        fg = -numpy.log(p)
+        bg = -numpy.log(1.-p)
+        unaries = numpy.dstack((fg, bg))
+        labels = iterated_conditonal_modes(unaries, beta=beta)
+        plt.imsave('label%d.png'%index, labels)
+        index += 1
