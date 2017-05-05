@@ -32,6 +32,38 @@ energy += 4 - [labels[x0-1,x1], labels[x0+1,x1],
             labels[x0,x1-1], labels[x0,x1+1]].count(l)
 \end{verbatim}
 
+The code to use probability pictures as unaries is:
+
+\begin{verbatim}
+# import predictions from exercise1
+# prediction images are in folder predictions/
+pred_paths = glob.glob("predictions/*")
+pred = [skimage.img_as_float(skimage.io.imread(f)) for f in pred_paths]
+
+# Getting rid of the zeros
+for x in numpy.nditer(pred[0], op_flags=['readwrite']):
+    if x == 0:
+        x[...] = 1e-100
+    if x == 1:
+        x[...] = 1. - 1e-16
+
+fg = -numpy.log(pred[0])
+bg = -numpy.log(1.-pred[0])
+unaries = numpy.dstack((fg, bg))
+\end{verbatim}
+
+Changing beta doesn't do anything since it isn't used in the function.
+
+In the whole program (source below) there is also an addition at the end to produce pictures of the labels. A few examples are shown here:
+
+\includegraphics[width=.45\linewidth]{label0.png}
+\includegraphics[width=.45\linewidth]{label1.png}
+\\
+\includegraphics[width=.45\linewidth]{label2.png}
+\includegraphics[width=.45\linewidth]{label3.png}
+\\
+\lstinputlisting[caption=icm.py,label=lst:icm]{icm.py}
+
 \section{Higher order factors}
 The domain of $x_z$ is ${0,1,2,3,4,5,6,7}$. Each variable value represents one energy state. The pairwise factors are given in the following table:
 
@@ -61,6 +93,7 @@ The domain of $x_z$ is ${0,1,2,3,4,5,6,7}$. Each variable value represents one e
   $\phi_{1z}$  \Repeat{8}{& 0 & $\infty$} \\
   \hline
 \end{tabular}
+
 
 \end{document}
 
