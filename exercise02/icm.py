@@ -1,5 +1,5 @@
 import numpy
-
+import math
 import os
 import glob
 import skimage.io
@@ -27,7 +27,7 @@ def iterated_conditonal_modes(unaries, beta, labels = None):
                     energy = 0.0
 
                     # unary terms
-                    energy += unaries[x0,x1,l]
+                    energy += - beta * math.log(unaries[x0,x1,l])
 
                     # pairwise terms
                     energy += 4 - [labels[x0-1,x1], labels[x0+1,x1],
@@ -67,8 +67,8 @@ if __name__ == "__main__":
         if x == 1:
             x[...] = 1. - 1e-16
 
-    fg = -numpy.log(pred[0])
-    bg = -numpy.log(1.-pred[0])
+    fg = pred[0]
+    bg = 1.-pred[0]
     unaries = numpy.dstack((fg, bg))
 
     labels = iterated_conditonal_modes(unaries, beta=beta)
@@ -85,8 +85,8 @@ if __name__ == "__main__":
             if x == 1:
                 x[...] = 1. - 1e-16
 
-        fg = -numpy.log(p)
-        bg = -numpy.log(1.-p)
+        fg = p
+        bg = 1.-p
         unaries = numpy.dstack((fg, bg))
         labels = iterated_conditonal_modes(unaries, beta=beta)
         plt.imsave('label%d.png'%index, labels)

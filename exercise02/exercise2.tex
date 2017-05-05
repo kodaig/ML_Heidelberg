@@ -2,7 +2,7 @@
 
 \input{../common/header.tex}
 
-\author{Kodai Matsuoke, Yuyan Li}
+\author{Kodai Matsuoka, Yuyan Li}
 \subject{Machine Learning for Computer Vision}
 \title{Exercise 2}
 % \subtitle{}
@@ -25,12 +25,14 @@ The missing code is:
 
 \begin{verbatim}
 # unary terms
-energy += unaries[x0,x1,l]
+energy += - beta * math.log(unaries[x0,x1,l])
 
 # pairwise terms
 energy += 4 - [labels[x0-1,x1], labels[x0+1,x1],
             labels[x0,x1-1], labels[x0,x1+1]].count(l)
 \end{verbatim}
+
+The regularizer \textit{beta} changes the coarseness of the labeling.
 
 The code to use probability pictures as unaries is:
 
@@ -47,12 +49,10 @@ for x in numpy.nditer(pred[0], op_flags=['readwrite']):
     if x == 1:
         x[...] = 1. - 1e-16
 
-fg = -numpy.log(pred[0])
-bg = -numpy.log(1.-pred[0])
+fg = p
+bg = 1.-p
 unaries = numpy.dstack((fg, bg))
 \end{verbatim}
-
-Changing beta doesn't do anything since it isn't used in the function.
 
 In the whole program (\textit{icm.py}) there is also an addition at the end to produce pictures of the labels. A few examples are shown here:
 
