@@ -62,10 +62,11 @@ In the whole program (source below) there is also an addition at the end to prod
 \includegraphics[width=.45\linewidth]{label2.png}
 \includegraphics[width=.45\linewidth]{label3.png}
 \\
-\lstinputlisting[caption=icm.py,label=lst:icm]{icm.py}
+% \lstinputlisting[caption=icm.py,label=lst:icm]{icm.py}
 
 \section{Higher order factors}
-The domain of $x_z$ is ${0,1,2,3,4,5,6,7}$. Each variable value represents one energy state. The pairwise factors are given in the following table:
+The domain of $x_z$ is $\{0,1,2,3,4,5,6,7\}$. Each variable value represents one energy state. The pairwise factors are given in the following table:
+
 
 \begin{tabular}{r|cccccccccccccccc}
   \hline
@@ -74,25 +75,21 @@ The domain of $x_z$ is ${0,1,2,3,4,5,6,7}$. Each variable value represents one e
   \hline
   $\phi_{0z}$  & a & b & c & d & \infrow{4}    & \infrow{4}    & e & f & g & h \\
   \hline
-\end{tabular}
-\\
-\begin{tabular}{r|cccccccccccccccc}
   \hline
   $x_z$        & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 \\
   $x_1$        & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 \\
   \hline
   $\phi_{1z}$  & 0 & 0 & \infrow{2} & 0 & 0 & \infrow{2} & \infrow{2} & 0 & 0 & \infrow{2} & 0 & 0 \\
   \hline
-\end{tabular}
-
-\begin{tabular}{r|cccccccccccccccc}
   \hline
   $x_z$        & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 \\
   $x_1$        & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 \\
   \hline
-  $\phi_{1z}$  \Repeat{8}{& 0 & $\infty$} \\
+  $\phi_{1z}$  \Repeat{4}{& 0 & $\infty$} \Repeat{4}{& $\infty$ & 0}\\
   \hline
 \end{tabular}
+
+By using infinity in the pairwise factors, for any value for $x_z$ there is only one value that each $x_i$ can have which correspond with the energy given by $\phi_{012}$.
 
 
 \end{document}
