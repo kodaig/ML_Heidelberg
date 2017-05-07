@@ -2,3 +2,7 @@
 *.aux
 *.log
 *.tar.gz
+
+# image files
+*.png
+*.jpg
