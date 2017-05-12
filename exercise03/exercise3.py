@@ -12,6 +12,9 @@ mu=
 mui(k) = 1 (xi=k), 0 (otherwise)
 muij(k,l) = 1 ((xi,xj)=(k,l)), 0 (otherwise)
 """
+#######
+# Implementation of Linear Program
+#######
 
 # give vector mu for given x0,x1,x2
 def givemu(x0, x1, x2):
@@ -84,7 +87,12 @@ for i in range(3):
 
 bounds = (0, None)
 
+######
+# Attractive and Repulsive Potentials
+######
+
 # coeff vector of given system
+# choose beta
 beta = +1.0
 p0 = [.1, .1]
 p1 = [.1, .9]
