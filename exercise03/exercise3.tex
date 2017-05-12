@@ -1,0 +1,93 @@
+\documentclass[12pt,a4paper]{scrartcl}
+
+\input{../common/header.tex}
+\setcounter{MaxMatrixCols}{20}
+
+\author{Kodai Matsuoke, Yuyan Li}
+\subject{Machine Learning for Computer Vision}
+\title{Exercise 3}
+% \subtitle{}
+\date{May 12, 2017}
+
+
+\begin{document}
+
+\maketitle
+
+Our program is shown in \cref{lst:lp}.
+
+For the Linear Program we have to use the vector $\mu$ as introduced in the lecture. For this system it is a 12-component vector.
+
+The function \textit{coeff(p0,p1,p2,p01,p02,p12)} take the potentials $\psi_i$ and $\psi_{ij}$ and puts them into a coefficient vector. It is also a 12-component vector.
+
+The constraint matrix A is chosen as:
+\begin{equation}
+   A =
+   \begin{pmatrix}
+   1 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+   0 & 0 & 1 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+   0 & 0 & 0 & 0 & 1 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+   -1 & 0 & 0 & 0 & 0 & 0 & 1 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+   0 & -1 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+   0 & 0 & -1 & 0 & 0 & 0 & 1 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+   0 & 0 & 0 & -1 & 0 & 0 & 0 & 1 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+   0 & 0 & -1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 1 & 0 & 0 & 0 & 0 & 0 & 0 \\
+   0 & 0 & 0 & -1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 1 & 0 & 0 & 0 & 0 \\
+   0 & 0 & 0 & 0 & -1 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \\
+   0 & 0 & 0 & 0 & 0 & -1 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 1 & 0 & 0 & 0 & 0 \\
+   0 & 0 & 0 & 0 & -1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 1 & 0 & 0 \\
+   0 & 0 & 0 & 0 & 0 & -1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 1 \\
+   -1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 1 & 0 \\
+   0 & -1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 1
+   \end{pmatrix}
+\end{equation}
+with the upper bound (12-component) vector:
+\[
+  b = 
+  \begin{pmatrix}
+    1 \\
+    1 \\
+    1 \\
+    0 \\
+    \vdots \\
+    0
+  \end{pmatrix}
+\]
+
+The constraint is thus:
+\[
+  A \mu \leq b
+\]
+
+We use the given potentials to calculate $\mu$ for $\beta \in \{-1,1\}$.
+
+The output for \textit{beta} = +1.0
+\begin{verbatim}
+  Optimization terminated successfully.
+        Current function value: 1.100000    
+        Iterations: 13
+  beta= 1.0
+  solution vector mu=
+  [ 1.  0.  1.  0.  1.  0.  1.  0.  0.  0.  1.  0.  0.  0.  1.  0.  0.  0.]
+  result: [ 0.  0.  0.]
+\end{verbatim}
+
+The output for \textit{beta} = -1.0
+\begin{verbatim}
+  Optimization terminated successfully.
+          Current function value: -1.900000   
+          Iterations: 16
+  beta= -1.0
+  solution vector mu=
+  [ 0.5  0.5  0.5  0.5  0.5  0.5  0.   0.5  0.5  0.   0.   0.5  0.5  0.   0.
+  0.5  0.5  0. ]
+  result: [ 0.  0.  0.]
+\end{verbatim}
+
+We see that the program gives a non-integer result for $\beta=-1$.
+
+
+\lstinputlisting[caption=exercise3.py,label=lst:lp]{exercise3.py}
+
+\end{document}
+

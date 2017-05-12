@@ -49,7 +49,7 @@ def energy(cost, state):
     return sum(cost * state)
 
 
-#coefficient vector
+# coefficient vector
 # pi are the unaries and pij are the pairwise factors
 def coeff(p0, p1, p2, p01, p02, p12):
     c = np.zeros(18)
@@ -61,7 +61,7 @@ def coeff(p0, p1, p2, p01, p02, p12):
     c[14:18] = p12.flatten()
     return c
 
-#constraint matrix
+# constraint matrix
 A = np. zeros((15,18))
 for i in range(3):
     A[i,2*i] = 1
@@ -84,25 +84,25 @@ for i in range(3):
 
 bounds = (0, None)
 
-beta = -1.0
+# coeff vector of given system
+beta = +1.0
 p0 = [.1, .1]
 p1 = [.1, .9]
 p2 = [.9, .1]
 pp = np.array([[0.,beta],[beta,0.]])
-
 c = coeff(p0,p1,p2,pp,pp,pp)
 
 res = linprog(c, A_eq=A, b_eq=b, bounds=(bounds), options={"disp": True})
 x_res = givex(res.x)
 
 print("beta=",beta)
-print("coefficients vector c=\n",c)
-print("constraint matrix A=\n",A)
-print("constraint vector b=\n",b)
+# print("coefficients vector c=\n",c)
+# print("constraint matrix A=\n",A)
+# print("constraint vector b=\n",b)
 print("solution vector mu=\n",res.x)
 print(f"result: {x_res}")
 
-
+# some checks
 # print(energy(c, res.x))
 # print(energy(c, givemu(0,0,0)))
 # print(givemu(1,1,1))
