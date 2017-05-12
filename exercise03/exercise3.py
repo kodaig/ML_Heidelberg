@@ -2,9 +2,16 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import linprog
 
-# for checking
-def energy(cost, state):
-    return sum(cost * state)
+"""
+I set solution vector "mu" as
+mu=
+[mu0(0),mu0(1),mu1(0),mu1(1),mu2(0),mu2(1)
+,mu01(0,0),mu01(0,1),mu01(1,0),mu01(1,1)
+,mu12(0,0),mu12(0,1),mu12(1,0),mu12(1,1)
+,mu20(0,0),mu20(0,1),mu20(1,0),mu20(1,1)]
+mui(k) = 1 (xi=k), 0 (otherwise)
+muij(k,l) = 1 ((xi,xj)=(k,l)), 0 (otherwise)
+"""
 
 # give vector mu for given x0,x1,x2
 def givemu(x0, x1, x2):
@@ -37,23 +44,22 @@ def givex(mu):
     x[2] = int(mu[5] == 1)
     return x
 
-#coefficient vector
-def cost(b):
-    c = np.array([0.1,0.1,0.1,0.9,0.9,0.1,0.,b,b,0.,0.,b,b,0.,0.,b,b,0.])
-    return c
+# for checking
+def energy(cost, state):
+    return sum(cost * state)
 
-beta = -1.0
-c = cost(beta)
-"""
-I set solution vector "mu" as
-mu=
-[mu0(0),mu0(1),mu1(0),mu1(1),mu2(0),mu2(1)
-,mu01(0,0),mu01(0,1),mu01(1,0),mu01(1,1)
-,mu12(0,0),mu12(0,1),mu12(1,0),mu12(1,1)
-,mu20(0,0),mu20(0,1),mu20(1,0),mu20(1,1)]
-mui(k) = 1 (xi=k), 0 (otherwise)
-muij(k,l) = 1 ((xi,xj)=(k,l)), 0 (otherwise)
-"""
+
+#coefficient vector
+# pi are the unaries and pij are the pairwise factors
+def coeff(p0, p1, p2, p01, p02, p12):
+    c = np.zeros(18)
+    c[0:2] = p0
+    c[2:4] = p1
+    c[4:6] = p2
+    c[6:10] = p01.flatten()
+    c[10:14] = p02.flatten()
+    c[14:18] = p12.flatten()
+    return c
 
 #constraint matrix
 A = np. zeros((15,18))
@@ -71,13 +77,22 @@ A[3:7,6:10] = a
 A[7:11,10:14] = a
 A[11:15,14:18] = a
 
+# constraint vector
 b = np.zeros(15)
 for i in range(3):
     b[i] = 1
 
-bounds = ((0, 1),) * 18
+bounds = (0, None)
 
-res = linprog(c, A_eq=A, b_eq=b, bounds=bounds, options={"disp": True})
+beta = -1.0
+p0 = [.1, .1]
+p1 = [.1, .9]
+p2 = [.9, .1]
+pp = np.array([[0.,beta],[beta,0.]])
+
+c = coeff(p0,p1,p2,pp,pp,pp)
+
+res = linprog(c, A_eq=A, b_eq=b, bounds=(bounds), options={"disp": True})
 x_res = givex(res.x)
 
 print("beta=",beta)
