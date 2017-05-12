@@ -16,9 +16,41 @@
 
 Our program is shown in \cref{lst:lp}.
 
-For the Linear Program we have to use the vector $\mu$ as introduced in the lecture. For this system it is a 18-component vector.
+For the Linear Program we have to use the vector $\mu$ as introduced in the lecture. For this system it is a 18-component vector as below.
 
-The function \textit{coeff(p0,p1,p2,p01,p02,p12)} take the potentials $\psi_i$ and $\psi_{ij}$ and puts them into a coefficient vector. It is also a 18-component vector.
+\[
+\mu = 
+(
+\begin{array}{cccccccccc}
+\mu_{0}(0) & \mu_{0}(1) & \mu_{1}(0) & \mu_{1}(1) & \mu_{2}(0) & \mu_{2}(1)
+& \mu_{01}(0,0) & \mu_{01}(0,1) & \mu_{01}(1,0) & \mu_{01}(1,1)
+\end{array}
+\]
+\[
+\begin{array}{cccccccc}
+%& \mu_{01}(0,0) & \mu_{01}(0,1) & \mu_{01}(1,0) & \mu_{01}(1,1)
+\mu_{12}(0,0) & \mu_{12}(0,1) & \mu_{12}(1,0) & \mu_{12}(1,1)
+& \mu_{20}(0,0) & \mu_{20}(0,1) & \mu_{20}(1,0) & \mu_{20}(1,1)
+\end{array}
+)
+\]
+
+The function \textit{coeff(p0,p1,p2,p01,p02,p12)} take the potentials $\psi_i$ and $\psi_{ij}$ and puts them into a coefficient vector. It is also a 18-component vector as below.
+
+c = 
+(
+\begin{array}{cccccccccc}
+\phi_{0}(0) & \phi_{0}(1) & \phi_{1}(0) & \phi_{1}(1) & \phi_{2}(0) & \phi_{2}(1) &
+\psi_{01}(0,0) & \psi_{01}(0,1) & \psi_{01}(1,0) & \psi_{01}(1,1)
+\end{array}
+\]
+\[
+\begin{array}{cccccccc}
+\psi_{12}(0,0) & \psi_{12}(0,1) & \psi_{12}(1,0) & \psi_{12}(1,1)
+& \psi_{20}(0,0) & \psi_{20}(0,1) & \psi_{20}(1,0) & \psi_{20}(1,1)
+\end{array}
+)
+\]
 
 The constraint matrix A is chosen as:
 \begin{equation}
@@ -41,7 +73,7 @@ The constraint matrix A is chosen as:
    0 & -1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 1
    \end{pmatrix}
 \end{equation}
-with the upper bound (15-component) vector:
+with the constraint (15-component) vector:
 \[
   b = 
   \begin{pmatrix}
@@ -84,8 +116,9 @@ The output for \textit{beta} = -1.0
   result: [ 0.  0.  0.]
 \end{verbatim}
 
-We see that the program gives a non-integer result for $\beta=-1$.
-
+Comment
+1. We see that the program gives a non-integer result for $\beta=-1$. We need to use ILP to get the right solution.
+2. For \(\beta=1\), the exact solutions (calculated by hand) are (x0,x1,x2)=(0,0,0) and (1,1,1). However it gave only one of these solutions which is (1,1,1).
 \clearpage
 \lstinputlisting[caption=exercise3.py,label=lst:lp]{exercise3.py}
 
