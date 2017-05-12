@@ -17,26 +17,19 @@
 Our program is shown in \cref{lst:lp}.
 
 For the Linear Program we have to use the vector $\mu$ as introduced in the lecture. For this system it is a 18-component vector as below.
-
 \[
 \mu = 
-(
-\begin{array}{cccccccccc}
-\mu_{0}(0) & \mu_{0}(1) & \mu_{1}(0) & \mu_{1}(1) & \mu_{2}(0) & \mu_{2}(1)
-& \mu_{01}(0,0) & \mu_{01}(0,1) & \mu_{01}(1,0) & \mu_{01}(1,1)
+\begin{array}{ccccccccccc}
+  ( & \mu_{0}(0) & \mu_{0}(1) & \mu_{1}(0) & \mu_{1}(1) & \mu_{2}(0) & \mu_{2}(1)
+      & \mu_{01}(0,0) & \mu_{01}(0,1) & \mu_{01}(1,0) & \\
+   & \mu_{01}(1,1) & \mu_{12}(0,0) & \mu_{12}(0,1) & \mu_{12}(1,0) & \mu_{12}(1,1)
+      & \mu_{20}(0,0) & \mu_{20}(0,1) & \mu_{20}(1,0) & \mu_{20}(1,1) & )
 \end{array}
-\]
-\[
-\begin{array}{cccccccc}
-%& \mu_{01}(0,0) & \mu_{01}(0,1) & \mu_{01}(1,0) & \mu_{01}(1,1)
-\mu_{12}(0,0) & \mu_{12}(0,1) & \mu_{12}(1,0) & \mu_{12}(1,1)
-& \mu_{20}(0,0) & \mu_{20}(0,1) & \mu_{20}(1,0) & \mu_{20}(1,1)
-\end{array}
-)
 \]
 
 The function \textit{coeff(p0,p1,p2,p01,p02,p12)} take the potentials $\psi_i$ and $\psi_{ij}$ and puts them into a coefficient vector. It is also a 18-component vector as below.
 
+\[
 c = 
 (
 \begin{array}{cccccccccc}
