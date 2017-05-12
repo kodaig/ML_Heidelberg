@@ -16,7 +16,7 @@
 
 Our program is shown in \cref{lst:lp}.
 
-For the Linear Program we have to use the vector $\mu$ as introduced in the lecture. For this system it is a 18-component vector as below.
+For the Linear Program we have to use the vector $\mu$ as introduced in the lecture. The function \textit{givemu(x0,x1,x2)} produces such a vector for given (x0,x1,x2). For this system $\mu$ is a 18-component vector of the form:
 \[
 \mu = 
 \begin{array}{ccccccccccc}
@@ -27,13 +27,12 @@ For the Linear Program we have to use the vector $\mu$ as introduced in the lect
 \end{array}
 \]
 
-The function \textit{coeff(p0,p1,p2,p01,p02,p12)} take the potentials $\psi_i$ and $\psi_{ij}$ and puts them into a coefficient vector. It is also a 18-component vector as below.
-
+The function \textit{coeff(p0,p1,p2,p01,p02,p12)} takes the potentials $\psi_i$ and $\psi_{ij}$ and puts them into a coefficient vector. It is also a 18-component vector of the form:
 \[
 c = 
 (
 \begin{array}{cccccccccc}
-\phi_{0}(0) & \phi_{0}(1) & \phi_{1}(0) & \phi_{1}(1) & \phi_{2}(0) & \phi_{2}(1) &
+\psi_{0}(0) & \psi_{0}(1) & \psi_{1}(0) & \psi_{1}(1) & \psi_{2}(0) & \psi_{2}(1) &
 \psi_{01}(0,0) & \psi_{01}(0,1) & \psi_{01}(1,0) & \psi_{01}(1,1)
 \end{array}
 \]
@@ -112,6 +111,7 @@ The output for \textit{beta} = -1.0
 Comment
 1. We see that the program gives a non-integer result for $\beta=-1$. We need to use ILP to get the right solution.
 2. For \(\beta=1\), the exact solutions (calculated by hand) are (x0,x1,x2)=(0,0,0) and (1,1,1). However it gave only one of these solutions which is (1,1,1).
+
 \clearpage
 \lstinputlisting[caption=exercise3.py,label=lst:lp]{exercise3.py}
 
