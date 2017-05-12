@@ -1,40 +1,38 @@
-% !TeX root = ./main.tex
-
-% write thesis using scrreprt class, see also
-% http://mirrors.ctan.org/macros/latex/contrib/koma-script/scrguien.pdf or
-% http://mirrors.ctan.org/macros/latex/contrib/koma-script/scrguide.pdf
-% \documentclass[paper=a4,bibliography=totoc,abstract=on,10pt]{scrartcl}
-
-\usepackage{
-    amsmath,
-    graphicx,
-    % url,
-    tabularx,
-    % booktabs,
-    % multirow,
-    % epstopdf,
-    caption,
-    subcaption,
-    float,
-    % floatrow,
-    listingsutf8,
-}
+%%%%%
+% Header for solutions for the course Machine Learning for Computer Vision
+% Summer 2017
+%%%%%
 
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
 
-\usepackage[load-configurations = abbreviations]{siunitx}
+\usepackage{
+  amsmath,
+  graphicx,
+  tabularx,
+  caption,
+  subcaption,
+  float,
+  listingsutf8,
+}
 
+\usepackage[load-configurations = abbreviations]{siunitx}
 \usepackage{hyperref}
 \usepackage[english]{cleveref}
 
-% \linespread{1.25}
+%%%%% format settings
+%------------
 \setlength{\parindent}{0pt} %no indent
+%------------
 
-\captionsetup{format=plain,font=small,margin=20pt}
-
+%%%%% settings for listings
 \lstset{
   language=python,
+  basicstyle=\footnotesize,  % font size
+  showspaces=false,
+  showstringspaces=false,
+  frame=single, %tb
+  breaklines=true,
   % backgroundcolor=\color[RGB]{245,245,244},
   % otherkeywords={self},             % Add keywords here
   % keywordstyle=\color{blue},
@@ -42,14 +40,9 @@
   % stringstyle=\color[RGB]{255,140,0},
   % numbers=left,
   % stepnumber=5,
-  showspaces=false,
-  showstringspaces=false,
-  frame=single, %tb
-  breaklines=true
 }
 
-% \graphicspath{{pictures}}
-
-% \floatsetup[table]{capposition= top,objectset=centering}
-% \floatsetup[figure]{objectset=centering}
-
+%%% commands
+%------------
+\newcommand{\code}{\texttt}
+%------------
