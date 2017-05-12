@@ -2,6 +2,40 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import linprog
 
+# for checking
+def energy(cost, state):
+    return sum(cost * state)
+
+# give vector mu for given x0,x1,x2
+def givemu(x0, x1, x2):
+    mu = np.zeros(18)
+    mu[x0] = 1
+    mu[x1 + 2] = 1
+    mu[x2 + 4] = 1
+
+    mu[6] = mu[0]*mu[2]
+    mu[7] = mu[0]*mu[3]
+    mu[8] = mu[1]*mu[2]
+    mu[9] = mu[1]*mu[3]
+
+    mu[10] = mu[0]*mu[2]
+    mu[11] = mu[0]*mu[3]
+    mu[12] = mu[1]*mu[2]
+    mu[13] = mu[1]*mu[3]
+
+    mu[14] = mu[2]*mu[4]
+    mu[15] = mu[2]*mu[5]
+    mu[16] = mu[3]*mu[4]
+    mu[17] = mu[3]*mu[5]
+    return mu
+
+# give vector x for given mu
+def givex(mu):
+    x = np.zeros(3)
+    x[0] = int(mu[1] == 1)
+    x[1] = int(mu[3] == 1)
+    x[2] = int(mu[5] == 1)
+    return x
 
 #coefficient vector
 def cost(b):
@@ -41,48 +75,18 @@ b = np.zeros(15)
 for i in range(3):
     b[i] = 1
 
-bounds = (0,None)
+bounds = ((0, 1),) * 18
 
-res = linprog(c, A_eq=A, b_eq=b, bounds=(bounds), options={"disp": True})
+res = linprog(c, A_eq=A, b_eq=b, bounds=bounds, options={"disp": True})
+x_res = givex(res.x)
 
 print("beta=",beta)
 print("coefficients vector c=\n",c)
 print("constraint matrix A=\n",A)
 print("constraint vector b=\n",b)
 print("solution vector mu=\n",res.x)
+print(f"result: {x_res}")
 
-# for checking
-def energy(cost, state):
-    return sum(cost * state)
-
-def givemu(x0, x1, x2):
-    mu = np.zeros(18)
-    mu[x0] = 1
-    mu[x1 + 2] = 1
-    mu[x2 + 4] = 1
-
-    mu[6] = mu[0]*mu[2]
-    mu[7] = mu[0]*mu[3]
-    mu[8] = mu[1]*mu[2]
-    mu[9] = mu[1]*mu[3]
-
-    mu[10] = mu[0]*mu[2]
-    mu[11] = mu[0]*mu[3]
-    mu[12] = mu[1]*mu[2]
-    mu[13] = mu[1]*mu[3]
-
-    mu[14] = mu[2]*mu[4]
-    mu[15] = mu[2]*mu[5]
-    mu[16] = mu[3]*mu[4]
-    mu[17] = mu[3]*mu[5]
-    return mu
-
-def givex(mu):
-    x = np.zeros(3)
-    x[0] = int(mu[1] == 1)
-    x[1] = int(mu[3] == 1)
-    x[2] = int(mu[5] == 1)
-    return x
 
 # print(energy(c, res.x))
 # print(energy(c, givemu(0,0,0)))
