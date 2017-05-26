@@ -353,6 +353,7 @@ for noise in noises:
         # ==============
 
         # losses for this c
+        # put losses of all images in a list
         l_c = []
 
         for i,(gm,_,loss_function) in enumerate(models_test):
@@ -366,10 +367,13 @@ for noise in noises:
                 y_pred = graphcut.optimize()
 
             print('loss of test img', i, '=', loss_function(y_pred))
+
             l_c.append(loss_function(y_pred))
 
+        # put losses of all regularizers in a list
         l_noises.append(l_c)
 
+    # put losses for all noises in a list
     loss_test.append(l_noises)
 
 print(numpy.array(loss_test))
