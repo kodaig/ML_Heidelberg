@@ -1,0 +1,129 @@
+\documentclass[12pt]{scrartcl}
+
+\input{../common/header.tex}
+
+\author{Kodai Matsuoka, Yuyan Li}
+\subject{Machine Learning for Computer Vision}
+\title{Exercise 5}
+% \subtitle{}
+\date{26 May, 2017}
+
+
+\begin{document}
+
+\maketitle
+
+\section{Features}
+
+Our unary and Potts features are computed with the code in \Cref{lst:feat}.
+
+\lstinputlisting[caption=Feature functions,linerange={30-63},label=lst:feat]{StructLearn.py}
+
+\section{Test set performance with GraphCut}
+The full code is at the bottom in \Cref{lst:full}. We have a variable \code{mode} for the different exercises.
+
+For this part we chose \code{mode='gp'} to use graph cut.
+
+The computed loss values for different noises and regularizers are:
+
+\begin{verbatim}
+[[[ 7 15  1 10  8]
+  [ 7 13  2  8  8]
+  [ 7 13  2  9  9]
+  [ 7 14  1 10  9]
+  [ 7 14  1 10  9]]
+
+ [[16 14 17 15 19]
+  [15 15 17 19 20]
+  [16 15 12 19 20]
+  [16 16 13 20 20]
+  [16 15 13 20 20]]
+
+ [[10 12 16 10 11]
+  [17 14 22 10 15]
+  [17 14 23 10 15]
+  [17 14 22 10 15]
+  [19 14 22 10 15]]
+
+ [[22 18 16 21 15]
+  [20 21 19 24 16]
+  [20 23 19 22 18]
+  [20 23 19 24 18]
+  [20 23 19 24 18]]
+
+ [[40 25 18 32 22]
+  [40 30 18 41 32]
+  [37 28 18 40 38]
+  [41 30 17 42 43]
+  [41 30 17 42 43]]]
+\end{verbatim}
+
+The content of this list structure is:
+
+- every row is the loss of the five test images of a certain regularizer C and noise
+
+- every list of five rows belong to a certain noise
+
+The noises and regularizer values are sorted as given in the exercise.
+
+As expected, a bigger noise leads to worse predictions and therefore higher losses.
+
+\section{Test set performance with ICM}
+
+The same is done using an ICM solver instead of GraphCut by setting \code{mode='icm'}.
+
+\begin{verbatim}
+[[[ 5  5  6  9  5]
+  [ 5  5  6  9  5]
+  [ 5  5  6  8  5]
+  [ 5  5  6  8  5]
+  [ 5  5  6  8  5]]
+
+ [[ 1 10 12 14  0]
+  [ 5 11 12 15  0]
+  [ 4 12 11 14  0]
+  [ 5 11 13 15  0]
+  [ 5 11 13 14  0]]
+
+ [[16 12 12 17 15]
+  [17 13 22 18 14]
+  [17 13 21 19 14]
+  [17 13 22 20 14]
+  [17 13 22 20 14]]
+
+ [[21 22 22 17 16]
+  [22 25 20 22 17]
+  [23 27 20 22 16]
+  [22 24 19 22 16]
+  [22 24 18 22 16]]
+
+ [[56 46 21 26 34]
+  [40 24 34 14 60]
+  [46 24 43 17 60]
+  [46 24 55 19 60]
+  [44 26 44 21 60]]]
+\end{verbatim}
+
+Qualitatively, there does not seem to be a difference to the GraphCut results.
+
+\section{Bonus: show performance during training}
+
+With the code in \Cref{lst:bonus} the training and test set performances are show after every iteration during training.
+
+If \code{mode='bonus'} then after every training a plot with the losses is shown. One exemplary plot can be seen in \Cref{fig:bonus}.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{loss}
+    \label{fig:bonus}
+\end{figure}
+
+\lstinputlisting[caption=Code to show performance after every iteration during training.,linerange={243-273},label=lst:bonus]{StructLearn.py}
+
+
+
+\clearpage
+\lstinputlisting[caption=StructLearn.py,label=lst:full]{StructLearn.py}
+
+\end{document}
+
