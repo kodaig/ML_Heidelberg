@@ -6,3 +6,6 @@
 # image files
 *.png
 *.jpg
+
+# jupyter checkpoints
+.ipynb_checkpoints
