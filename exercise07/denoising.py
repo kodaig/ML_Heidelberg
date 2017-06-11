@@ -131,12 +131,12 @@ shape = gt_img.shape
 size = shape[0] * shape[1]
 
 # add noise
-# noisy_img = ski.util.random_noise(gt_img, var=noise**2)
-# noisy_img = np.clip(noisy_img, 0, 1)
+noisy_img = ski.util.random_noise(gt_img, var=noise**2)
+noisy_img = np.clip(noisy_img, 0, 1)
 
 # load noisy image
-noisy_img = ski.io.imread("noisy.png")
-noisy_img = norm01(noisy_img)
+# noisy_img = ski.io.imread("noisy.png")
+# noisy_img = norm01(noisy_img)
 
 
 # constQ = buildConstQ(shape[0:2], -.5)
