@@ -2,6 +2,10 @@
 *.aux
 *.log
 *.tar.gz
+*.out
+*.fls
+*.fdb_latexmk
+*.synctex.gz
 
 # image files
 *.png
