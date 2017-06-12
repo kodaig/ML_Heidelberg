@@ -1,26 +1,31 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import skimage as ski
-from skimage import data, img_as_float
+from skimage import data
 import scipy.sparse
 import time
 
+# normalize images to [0,1]
 def norm01(data):
     res = data.astype('float')
     res -= res.min()
     res /= res.max()
     return res
 
+# difference between two images using the 2-norm
 def performance(p1, p2):
     return np.linalg.norm(p1 - p2)
 
+# build a simple Q matrix with constant off-diagonal elements beta
 def buildConstQ(imshape, beta = -1.):
+    start = time.time()
+
     nrows, ncols = imshape
     size = nrows * ncols
     
     Q = scipy.sparse.lil_matrix((size,size), dtype='float')
 
-    diagElem = 4
+    diagElem = 4 * abs(beta)
 
     # vectorized index
     def getInd(x, y):
@@ -42,12 +47,14 @@ def buildConstQ(imshape, beta = -1.):
                 Q[i,j] = beta
                 Q[j,i] = beta
 
-    print("Const Q built!")
+    print("Simple Q built in", time.time()-start)
 
     return Q.tocsc()
 
+# build a conditional Q matrix
 def buildFancyQ(im, gamma, alpha=-1.):
-    #print("alpha:",alpha,"gamma:",gamma)
+    start = time.time()
+
     nrows, ncols, ch = im.shape
     size = nrows * ncols
     
@@ -74,6 +81,7 @@ def buildFancyQ(im, gamma, alpha=-1.):
                 Q[i,j] = beta
                 Q[j,i] = beta
 
+                # add values to corresponding diagonal elements
                 Q[i,i] += abs(beta)
                 Q[j,j] += abs(beta)
 
@@ -86,12 +94,12 @@ def buildFancyQ(im, gamma, alpha=-1.):
 
                 Q[i,i] += abs(beta)
                 Q[j,j] += abs(beta)
-        
-    print("Fancy Q built!")
+
+    print("Fancy Q built in", time.time()-start)
 
     return Q.tocsc()
 
-
+# denoise an image with a given Q matrix
 def denoise(img, Q, sigma = 1.0):
     shape = img.shape
     size = shape[0] * shape[1]
@@ -100,27 +108,33 @@ def denoise(img, Q, sigma = 1.0):
     result = np.zeros(shape)
 
     # (I + sigma^2 Q) z = x
+    # A = I + sigma^2 Q
     A = scipy.sparse.identity(size, format='csc') + sigma**2 * Q
 
     for c in range(3):
+        start = time.time()
+
         x = img[:,:,c].ravel()
 
-        z = scipy.sparse.linalg.spsolve(A, x)
+        # z = scipy.sparse.linalg.spsolve(A, x)
 
-        result[:,:,c] = z.reshape(shape[0:2])
+        result[:,:,c] = scipy.sparse.linalg.spsolve(A, x).reshape(shape[0:2])
         
-        print("Solved for color", c)
+        print("Solved for color", c, "in", time.time()-start)
 
     return result
 
 
-# parameters
-noise = 0.15
-sigma = 1.0
-gamma = 2.
-
 # time it
 start = time.time()
+
+# parameters
+noise = 0.15
+sigma = 8.0
+gamma = 10.0
+
+print(f"Parameters: Noiselevel {noise}, sigma {sigma}, gamma {gamma}")
+
 
 # load image
 gt_img = ski.data.astronaut()
@@ -142,14 +156,24 @@ noisy_img = np.clip(noisy_img, 0, 1)
 # constQ = buildConstQ(shape[0:2], -.5)
 fancyQ = buildFancyQ(noisy_img, gamma)
 
-
+# use simple Q
 # result_img = denoise(noisy_img, constQ, sigma)
+# or
+# use fancyQ
 result_img = denoise(noisy_img, fancyQ, sigma)
 result_img = norm01(result_img)
+
 
 print("Time from loading image to denoised image:", time.time() - start)
 
 
+quality = performance(gt_img, result_img)
+print("Quality of the denoising:", quality)
+
+
+
+# Do something with the images
+plt.imsave("noisy.png", noisy_img)
 plt.imsave("denoised.png", result_img)
 
 plt.figure(figsize=(10, 6))
