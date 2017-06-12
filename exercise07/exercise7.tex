@@ -15,7 +15,44 @@
 
 \section{Implementation}
 
-Our implementation of the Gaussian Graphical Model is shown below in \cref{lst:den}.
+Our implementation of the Gaussian Graphical Model (GGM) is shown below in \cref{lst:den}.
+
+
+\section{Comparison}
+
+We compared our algorithm to some of the algorithms available on ipol.im.
+
+In particular we used the \emph{Non-Local Means Denoising} to do a qualitative comparision. For that we used their program to first produce a noisy image which we denoised with both their and our algorithm. Then we used their program \emph{img\_mse\_ipol} to calculate the RMSE and the PSNR. The better denoising has a smaller RMSE and larger PSNR value. We can see that the GGM is still far from achieving the results of the \emph{nlmeans} algorithm.
+
+\begin{table}
+  \centering
+  \caption{RMSE and PSNR values of different algorithm with noise value $\sigma=30$.}
+  \begin{tabular}{l | r | r}
+          & GGM   & nlmeans \\
+    \hline
+    RMSE  & 13.66 & 8.00    \\
+    PSNR  & 25.42 & 30.07
+  \end{tabular}
+  \label{tab:rmse}
+\end{table}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=.3\linewidth]{compare/noisy}
+  \includegraphics[width=.3\linewidth]{compare/nldenoised}
+  \includegraphics[width=.3\linewidth]{compare/mydenoised}
+  \label{fig:den}
+  \caption{From left to right the pictures show: the noisy image, denoised with \emph{nlmeans}, denoised with our algorithm.}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=.3\linewidth]{compare/nldifference}
+  \includegraphics[width=.3\linewidth]{compare/mydifference}
+  \label{fig:diff}
+  \caption{The differences to the original image. On the left is \emph{nlmeans} and on the right our algorithm.}
+\end{figure}
+
 
 
 
