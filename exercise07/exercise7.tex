@@ -17,12 +17,41 @@
 
 Our implementation of the Gaussian Graphical Model (GGM) is shown below in \cref{lst:den}.
 
+One example output is:
+
+\begin{verbatim}
+Parameters: noise 0.15, sigma 1.0, alpha -1.0, gamma 1.0
+Solved for color 0 in 3.7961630821228027
+Solved for color 1 in 3.9012866020202637
+Solved for color 2 in 3.9784975051879883
+Time from loading image to denoised image: 34.903324842453
+Quality of the denoising: 55.5743917152
+\end{verbatim}
+
+The time is given in seconds. The measure for quality is the \code{numpy.linalg.norm} between the denoised and the original image.
+In \cref{fig:ex} the images corresponding to the output are shown.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=.3\linewidth]{original}
+  \includegraphics[width=.3\linewidth]{example/noisy}
+  \includegraphics[width=.3\linewidth]{example/denoised}
+  \label{fig:ex}
+  \caption{From left to right the pictures show: the original image, the noisy image, the denoised image.}
+\end{figure}
+
+By varying the parameters \code{noise}, \code{sigma}, \code{alpha} and \code{gamma} we can evaluate their effect on the results.
+
 
 \section{Comparison}
 
 We compared our algorithm to some of the algorithms available on ipol.im.
 
-In particular we used the \emph{Non-Local Means Denoising} to do a qualitative comparision. For that we used their program to first produce a noisy image which we denoised with both their and our algorithm. Then we used their program \emph{img\_mse\_ipol} to calculate the RMSE and the PSNR. The better denoising has a smaller RMSE and larger PSNR value. We can see that the GGM is still far from achieving the results of the \emph{nlmeans} algorithm.
+In particular we used the \emph{Non-Local Means Denoising} to do a qualitative comparision. For that we used their program to first produce a noisy image which we denoised with both their and our algorithm. The resulting images are shown in \cref{fig:den}. Then we used their program \emph{img\_mse\_ipol} to calculate the RMSE and the PSNR. The results are shown in \cref{tab:rmse}. The better denoising has a smaller RMSE and larger PSNR value.
+
+In \cref{fig:diff} we have computed the differences to the original picture using \emph{img\_diff\_ipol}.
+
+We can see that the GGM is still far from achieving the results of the \emph{nlmeans} algorithm. In particular the GGM can't detect large areas of uniform color since it only compares neighboring pixels.
 
 \begin{table}
   \centering
@@ -52,7 +81,6 @@ In particular we used the \emph{Non-Local Means Denoising} to do a qualitative c
   \label{fig:diff}
   \caption{The differences to the original image. On the left is \emph{nlmeans} and on the right our algorithm.}
 \end{figure}
-
 
 
 

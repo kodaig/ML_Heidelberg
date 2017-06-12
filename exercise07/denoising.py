@@ -130,10 +130,12 @@ start = time.time()
 
 # parameters
 noise = 0.15
-sigma = 8.0
-gamma = 10.0
+sigma = 1.0
+alpha = -1.0
+gamma = 1.0
 
-print(f"Parameters: Noiselevel {noise}, sigma {sigma}, gamma {gamma}")
+strParams = f"Parameters: noise {noise}, sigma {sigma}, alpha {alpha}, gamma {gamma}"
+print(strParams)
 
 
 # load image
@@ -154,7 +156,7 @@ noisy_img = np.clip(noisy_img, 0, 1)
 
 
 # constQ = buildConstQ(shape[0:2], -.5)
-fancyQ = buildFancyQ(noisy_img, gamma)
+fancyQ = buildFancyQ(noisy_img, gamma=gamma, alpha=alpha)
 
 # use simple Q
 # result_img = denoise(noisy_img, constQ, sigma)
@@ -192,6 +194,7 @@ plt.imshow(result_img)
 plt.title("Denoised")
 plt.axis('off')
 
-plt.suptitle(performance(gt_img, result_img))
+plt.suptitle(f"{strParams} Quality of denoising: {quality}")
 
 plt.savefig("result.png")
+# plt.show()
