@@ -21,28 +21,32 @@ One example output is:
 
 \begin{verbatim}
 Parameters: noise 0.15, sigma 1.0, alpha -1.0, gamma 1.0
-Solved for color 0 in 3.7961630821228027
-Solved for color 1 in 3.9012866020202637
-Solved for color 2 in 3.9784975051879883
-Time from loading image to denoised image: 34.903324842453
-Quality of the denoising: 55.5743917152
+Fancy Q built in 21.59257435798645
+Solved for color 0 in 3.752129316329956
+Solved for color 1 in 3.723545789718628
+Solved for color 2 in 3.754192352294922
+Time from loading image to denoised image: 33.608970403671265
+Quality of the denoising: 54.8355275322
 \end{verbatim}
 
 The time is given in seconds. The measure for quality is the \code{numpy.linalg.norm} between the denoised and the original image.
 In \cref{fig:ex} the images corresponding to the output are shown.
 
-\begin{figure}
+\begin{figure}[h]
   \centering
   \includegraphics[width=.3\linewidth]{original}
   \includegraphics[width=.3\linewidth]{example/noisy}
   \includegraphics[width=.3\linewidth]{example/denoised}
-  \label{fig:ex}
   \caption{From left to right the pictures show: the original image, the noisy image, the denoised image.}
+  \label{fig:ex}
 \end{figure}
 
 By varying the parameters \code{noise}, \code{sigma}, \code{alpha} and \code{gamma} we can evaluate their effect on the results.
 
+Obviously, a stronger noise leads to worse results. An option which we haven't tried yet, is to rerun the algorithm on the result to improve the denoising.
 
+
+\clearpage
 \section{Comparison}
 
 We compared our algorithm to some of the algorithms available on ipol.im.
@@ -65,21 +69,21 @@ We can see that the GGM is still far from achieving the results of the \emph{nlm
   \label{tab:rmse}
 \end{table}
 
-\begin{figure}
+\begin{figure}[h]
   \centering
   \includegraphics[width=.3\linewidth]{compare/noisy}
   \includegraphics[width=.3\linewidth]{compare/nldenoised}
   \includegraphics[width=.3\linewidth]{compare/mydenoised}
-  \label{fig:den}
   \caption{From left to right the pictures show: the noisy image, denoised with \emph{nlmeans}, denoised with our algorithm.}
+  \label{fig:den}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[h]
   \centering
   \includegraphics[width=.3\linewidth]{compare/nldifference}
   \includegraphics[width=.3\linewidth]{compare/mydifference}
-  \label{fig:diff}
   \caption{The differences to the original image. On the left is \emph{nlmeans} and on the right our algorithm.}
+  \label{fig:diff}
 \end{figure}
 
 

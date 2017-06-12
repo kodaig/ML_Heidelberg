@@ -129,8 +129,8 @@ def denoise(img, Q, sigma = 1.0):
 start = time.time()
 
 # parameters
-noise = 0.15
-sigma = 1.0
+noise = 0.3
+sigma = 2.0
 alpha = -1.0
 gamma = 1.0
 
@@ -196,5 +196,5 @@ plt.axis('off')
 
 plt.suptitle(f"{strParams} Quality of denoising: {quality}")
 
-plt.savefig("result.png")
-# plt.show()
+# plt.savefig("result.png")
+plt.show()
