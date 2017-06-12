@@ -17,6 +17,10 @@
 
 Our implementation of the Gaussian Graphical Model (GGM) is shown below in \cref{lst:den}.
 
+The function \code{buildConstQ} returns the Q matrix in form of a \code{scipy.sparse.csc\_matrix} sparse matrix. It uses a constant value \code{beta} for the off-diagonal elements. These elements are chose to be negative because we want the energy to be lower for similar neighboring pixels.
+
+The function \code{buildFancyQ} returns the Q matrix depending on the given image. The off-diagonal elements are $\alpha \cdot \exp{(- \gamma \lVert c_i - c_j \rVert )}$. \code{alpha} is chosen negative so that we have negative off-diagonal elements like before. The diagonal elements are chose so that the row sum in the matrix Q vanishes.
+
 One example output is:
 
 \begin{verbatim}
