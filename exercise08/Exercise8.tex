@@ -1,0 +1,86 @@
+\documentclass[12pt,a4paper]{scrartcl}
+
+\input{../header.tex}
+
+\author{Kodai Matsuoke, Yuyan Li}
+\subject{Machine Learning for Computer Vision}
+\title{Exercise }
+% \subtitle{}
+\date{date}
+
+
+\begin{document}
+
+\maketitle
+
+% \lstinputlisting[language=LANG,caption=CAPTION,label=lst:LABEL]{PATH/TO/CODE.file}
+
+\section{Random Walker}
+\subsection{1D Random walker}
+Suppose \(x_{i}\) is the probability that a random walk particle started from position i first reaches to Seed A.
+Obviously, for i \(\in \{0,1,2,3\}, x_{i}=1\). also for i \(\in \{8,9,10,11,12\}, x_{i}=0\).
+
+
+So now, we want to calculate \(x_{4},x_{5},x_{6},x_{7}\). We formulate this problem as follows.
+\[
+x = (x_{4},x_{5},x_{6},x_{7})
+\quad
+x_{m} = (x_{3},x_{8})
+\quad
+A = 
+\left(
+\begin{array}{cccc}
+	2 & -1 & 0 & 0
+	\\
+	-1 & 2 & -1 & 0
+	\\
+	0 & -1 & 2 & -1
+	\\
+	0 & 0 & -1 & 2
+\end{array}
+\right)
+\quad
+B = 
+\left(
+\begin{array}{cc}
+	-1 & 0
+	\\
+	0 & 0
+	\\
+	0 & 0
+	\\
+	0 & -1
+\end{array}
+\right)
+\]
+
+By solving \(Ax = -Bx_{m}\), we obtain \(x = (0.8, 0.6, 0.4, 0.2)\). As well we can calculate the probability for Seed B.
+The overall probability is as shown below.
+
+\includegraphics[scale = 0.4]{1_1.png}
+
+
+
+\section{Random walker as Anisotropic Diffusion}
+\[
+\frac{\partial \phi}{\partial t} = D \frac{\partial^{2} \phi}{\partial x^{2}}
+\]
+
+When a large number of particles make randomwalk, diffusion equation describes the time developement of the particle density. I am going to show it.
+
+Let's suppose that the particle at position x makes a random walk such that after time \(\Delta\)t, it moves to x+\(\Delta\)x with probability 1/2, x-\(\Delta\)x with probability 1/2.
+
+Now, the following equation goes with regard to the particle density \(\phi\)
+
+\[
+\phi (x,t+\Delta t) = \frac{1}{2}\phi (x-\Delta x,t) + \frac{1}{2}\phi (x+\Delta x,t)
+\]
+Using Taylor expansion, it can be transformed as follows.
+
+\[
+\frac{\partial \phi}{\partial t} + O(\Delta t) = \frac{\Delta x^{2}}{\Delta t} \frac{\partial^{2} \phi}{\partial x^{2}} + O(\frac{\Delta x^{3}}{\Delta t})
+\]
+
+Take colloids in the water as a example of diffusion. They do brownian movement and their mean travel distance is proportional to the square root of time. For this reason, we can say that \(\frac{\Delta x^{2}}{\Delta t}\) is constant if we take \(\Delta\)x and \(\Delta\)t in proper range. Call constant D, by bringing \(\Delta\)x and \(\Delta\)t close to 0, we obtain a diffusion equation.
+
+\end{document}
