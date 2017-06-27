@@ -62,21 +62,22 @@ The overall probability is as shown below.
 
 \subsection{Implementation}
 
+Below is our simple implementation of the random walker. We experimented with different seed positions and different values of $\gamma$. One can see that for small $\gamma$ the random walker doesn't properly respect the borders in the picture. For sufficiently large values of $\gamma$ the algorithm gives a satisfying result.
+
 \begin{figure}
   \centering
   \includegraphics[width=\linewidth]{walker1}
-  \includegraphics[width=\linewidth]{walker10}
+  \includegraphics[width=\linewidth]{walker5}
 \end{figure}
 
 \begin{figure}
-  \includegraphics[width=\linewidth]{walker50}
+  \includegraphics[width=\linewidth]{walker10}
   \includegraphics[width=\linewidth]{walker100}
 \end{figure}
 
 \clearpage
 \lstinputlisting[caption=random_walker.py,label=lst:rw]{random_walker.py}
 
-\clearpage
 \section{Random walker as Anisotropic Diffusion}
 \[
 \frac{\partial \phi}{\partial t} = D \frac{\partial^{2} \phi}{\partial x^{2}}

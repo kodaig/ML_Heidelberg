@@ -54,6 +54,21 @@ def buildFancyQ(im, gamma):
 
 
 def simple_random_walker(img, fg, bg, gamma=1.0):
+    """
+    A simple random walker that takes one seed for foreground and background each.
+    img: image array
+    fg: indices of foreground seed
+    bg: indices of background seed
+    gamma: weight parameter
+
+    return: probability image, segmentation image
+
+    Using buildFancyQ a laplacian qmat is made
+    Bringing qmat into the proper form one can just solve the equation
+    A x = B xm
+    for x
+    (in the code A=a, B=b)
+    """
     nrows, ncols = shape = img.shape
     size = nrows * ncols
 
@@ -62,6 +77,7 @@ def simple_random_walker(img, fg, bg, gamma=1.0):
         return y + x * ncols
 
 
+    # Seed indices
     fg_ind = getInd(fg[0], fg[1])
     bg_ind = getInd(bg[0], bg[1])
 
@@ -111,6 +127,11 @@ def simple_random_walker(img, fg, bg, gamma=1.0):
 
 
 def experiment(gamma):
+    """
+    Experiment with different foreground seed positions
+
+    return: figure with images
+    """
     n = 100
     n2 = int(n/2)
     image = np.zeros((n+1, n+1))
@@ -132,6 +153,8 @@ def experiment(gamma):
     images = []
     for fg in fgs:
         prob, pred = simple_random_walker(image, fg, bg, gamma)
+
+        # Add a border
         prob = np.lib.pad(prob, ((1,1),(1,1)), 'constant', constant_values=(1))
         pred = np.lib.pad(pred, ((1,1),(1,1)), 'constant', constant_values=(1))
         probs.append(prob)
@@ -179,9 +202,10 @@ def experiment(gamma):
     return fig
 
 
-for gamma in [1.0, 10.0, 50.0, 100.0]:
-    fig = experiment(gamma)
-    g = int(gamma)
-    fig.savefig(f"walker{g}")
+if __name__ == "__main__":
+    for gamma in [1.1, 5.0, 50.0, 100.0]:
+        fig = experiment(gamma)
+        g = int(gamma)
+        fig.savefig(f"walker{g}")
 
 
