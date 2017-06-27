@@ -22,7 +22,7 @@ def buildConstQ(imshape, beta = -1.):
 
     nrows, ncols = imshape
     size = nrows * ncols
-    
+
     Q = scipy.sparse.lil_matrix((size,size), dtype='float')
 
     diagElem = 4 * abs(beta)
@@ -57,7 +57,7 @@ def buildFancyQ(im, gamma, alpha=-1.):
 
     nrows, ncols, ch = im.shape
     size = nrows * ncols
-    
+
     Q = scipy.sparse.lil_matrix((size,size), dtype='float')
 
     # off diagonal elements
@@ -103,7 +103,7 @@ def buildFancyQ(im, gamma, alpha=-1.):
 def denoise(img, Q, sigma = 1.0):
     shape = img.shape
     size = shape[0] * shape[1]
-    
+
     # init result image
     result = np.zeros(shape)
 
@@ -119,7 +119,7 @@ def denoise(img, Q, sigma = 1.0):
         # z = scipy.sparse.linalg.spsolve(A, x)
 
         result[:,:,c] = scipy.sparse.linalg.spsolve(A, x).reshape(shape[0:2])
-        
+
         print("Solved for color", c, "in", time.time()-start)
 
     return result
