@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
+# Entropy loss
 def loss(z, gt):
     n = z.size
     l = gt * np.log(z) + (1 - gt) * np.log(1 - z)
@@ -10,30 +11,32 @@ def loss(z, gt):
 def sigmoid(x):
     return 1 / (1 + np.exp(-x))
 
+# Our neural node
 def output(x, phi, r):
     return sigmoid(np.sin(phi) * x[0] + np.cos(phi) * x[1] + r)
 
 
-N = 10
-M = 10
+N = 50
+M = 50
+NData = 100
+MeanA = [6, 1]
+MeanB = [6, 2]
+Cov = [[1,0],
+       [0,1]]
 
 phi_list = np.linspace(0, 2*np.pi, N)
 r_list = np.linspace(-5.0, 5.0, M)
 
-
-NData = 100
-MeanA = [1, 1]
-MeanB = [1, 2]
-Cov = [[1,0],
-       [0,1]]
-
+# Make sample data
 a = np.random.multivariate_normal(MeanA, Cov, NData)
 b = np.random.multivariate_normal(MeanB, Cov, NData)
 
 
+# Output
 za = np.zeros(NData)
 zb = np.zeros(NData)
 
+# Losses
 la = np.zeros((N,M))
 lb = np.zeros((N,M))
 
@@ -45,13 +48,13 @@ for ip, phi in enumerate(phi_list):
         la[ip, ir] = loss(za, np.zeros(NData))
         lb[ip, ir] = loss(zb, np.ones(NData))
 
+# Total loss
 l = la + lb
 
 
-plt.imshow(la+lb)
+plt.imshow(l)
 plt.colorbar()
 
-
-plt.xlabel("phi")
-plt.ylabel("r")
+plt.xlabel("r")
+plt.ylabel("phi")
 plt.show()
