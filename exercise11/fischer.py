@@ -85,42 +85,12 @@ results = [l, fpp, frr, fpr]
 titles = ["Loss", "$F_{\phi \phi}$", "$F_{rr}$", "$F_{\phi r}$"]
 
 fig, ax = plt.subplots(2, 2)
+fig.subplots_adjust(wspace=0.3, hspace=0.3)
 
 for i, a in enumerate(ax.ravel()):
-    a.imshow(results[i], origin='lower', extent=[-5, 5, 0, 2*np.pi], aspect='auto')
+    a.imshow(results[i], extent=[-5, 5, 0, 2*np.pi], aspect=5/np.pi)
     a.set_title(titles[i])
     a.set_xlabel("r")
     a.set_ylabel("phi")
 
-
-fig.subplots_adjust(wspace=0.3, hspace=0.3)
 plt.show()
-# plt.subplot(221)
-# plt.imshow(l)
-# plt.colorbar()
-# plt.title("Loss")
-# plt.xlabel("r")
-# plt.ylabel("phi")
-
-# plt.subplot(222)
-# plt.imshow(fpp)
-# plt.colorbar()
-# plt.title("$F_{\phi \phi}$")
-# plt.xlabel("r")
-# plt.ylabel("phi")
-
-# plt.subplot(223)
-# plt.imshow(frr)
-# plt.colorbar()
-# plt.title("$F_{rr}$")
-# plt.xlabel("r")
-# plt.ylabel("phi")
-
-# plt.subplot(224)
-# plt.imshow(fpr)
-# plt.colorbar()
-# plt.title("$F_{\phi r}$")
-# plt.xlabel("r")
-# plt.ylabel("phi")
-
-# plt.show()
