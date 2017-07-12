@@ -11,9 +11,34 @@ def loss(z, gt):
 def sigmoid(x):
     return 1 / (1 + np.exp(-x))
 
+def sig_deriv(x):
+    return sigmoid(x) * (1 - sigmoid(x))
+
 # Our neural node
-def output(x, phi, r):
+def z(x, phi, r):
     return sigmoid(np.sin(phi) * x[0] + np.cos(phi) * x[1] + r)
+
+def derivative(x, phi, r):
+    return sig_deriv(np.sin(phi) * x[0] + np.cos(phi) * x[1] + r)
+
+def dzdp(x, phi, r):
+    return (np.cos(phi) * x[0] - sin(phi) * x[1]) * derivative(x, phi, r)
+
+def dzdr(x, phi, r):
+    return derivative(x, phi, r)
+
+def fischerPP(x, phi, r):
+    z = z(x, phi, r)
+    return dzdp(x, phi, r)**2 / (z * (1 - z))
+
+def fischerRR(x, phi, r):
+    z = z(x, phi, r)
+    return dzdr(x, phi, r)**2 / (z * (1 - z))
+
+def fischerPR(x, phi, r):
+    z = z(x, phi, r)
+    return dzdp(x, phi, r) * dzdr(x, phi, r) / (z * (1 - z))
+
 
 
 N = 50
@@ -39,6 +64,7 @@ zb = np.zeros(NData)
 # Losses
 la = np.zeros((N,M))
 lb = np.zeros((N,M))
+fpp, frr, fpr = np.zeros((N,M))
 
 for ip, phi in enumerate(phi_list):
     for ir,r in enumerate(r_list):
@@ -52,9 +78,10 @@ for ip, phi in enumerate(phi_list):
 l = la + lb
 
 
-plt.imshow(l)
-plt.colorbar()
 
-plt.xlabel("r")
-plt.ylabel("phi")
-plt.show()
+# plt.imshow(l)
+# plt.colorbar()
+
+# plt.xlabel("r")
+# plt.ylabel("phi")
+# plt.show()
