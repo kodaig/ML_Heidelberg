@@ -16,13 +16,13 @@ def sig_deriv(x):
 
 # Our neural node
 def out(x, phi, r):
-    return sigmoid(np.sin(phi) * x[0] + np.cos(phi) * x[1] + r)
+    return sigmoid(np.sin(phi) * x[:,0] + np.cos(phi) * x[:,1] + r)
 
 def derivative(x, phi, r):
-    return sig_deriv(np.sin(phi) * x[0] + np.cos(phi) * x[1] + r)
+    return sig_deriv(np.sin(phi) * x[:,0] + np.cos(phi) * x[:,1] + r)
 
 def dzdp(x, phi, r):
-    return (np.cos(phi) * x[0] - np.sin(phi) * x[1]) * derivative(x, phi, r)
+    return (np.cos(phi) * x[:,0] - np.sin(phi) * x[:,1]) * derivative(x, phi, r)
 
 def dzdr(x, phi, r):
     return derivative(x, phi, r)
@@ -60,32 +60,49 @@ a = np.random.multivariate_normal(MeanA, Cov, NData)
 b = np.random.multivariate_normal(MeanB, Cov, NData)
 
 
-# Output
-za = np.zeros(NData)
-zb = np.zeros(NData)
-
 # Losses
-la = lb = np.zeros((N,M))
-fpp = frr = fpr = np.zeros((N,M))
+la = np.zeros((N,M))
+lb = np.zeros((N,M))
+fpp = np.zeros((N,M))
+frr = np.zeros((N,M))
+fpr = np.zeros((N,M))
 
 for ip, phi in enumerate(phi_list):
     for ir,r in enumerate(r_list):
-        for i in range(NData):
-            za[i] = out(a[i,], phi, r)
-            zb[i] = out(b[i,], phi, r)
+        za = out(a[:,], phi, r)
+        zb = out(b[:,], phi, r)
         la[ip, ir] = loss(za, np.zeros(NData))
         lb[ip, ir] = loss(zb, np.ones(NData))
-        fpp[ip, ir] = fischerPP(a[:,], phi, r)
+
+        fpp[ip, ir] = fischerPP(a[:,], phi, r) + fischerPP(b[:,], phi, r)
+        frr[ip, ir] = fischerRR(a[:,], phi, r) + fischerRR(b[:,], phi, r)
+        fpr[ip, ir] = fischerPR(a[:,], phi, r) + fischerPR(b[:,], phi, r)
 
 # Total loss
 l = la + lb
 
-
-
-# plt.imshow(l)
-plt.imshow(fpp)
+plt.subplot(221)
+plt.imshow(l)
 plt.colorbar()
-
 plt.xlabel("r")
 plt.ylabel("phi")
+
+plt.subplot(222)
+plt.imshow(fpp)
+plt.colorbar()
+plt.xlabel("r")
+plt.ylabel("phi")
+
+plt.subplot(223)
+plt.imshow(frr)
+plt.colorbar()
+plt.xlabel("r")
+plt.ylabel("phi")
+
+plt.subplot(224)
+plt.imshow(fpr)
+plt.colorbar()
+plt.xlabel("r")
+plt.ylabel("phi")
+
 plt.show()
