@@ -1,0 +1,83 @@
+\documentclass[12pt]{scrartcl}
+
+\input{../common/header.tex}
+
+\usepackage{physics}
+
+\author{Kodai Matsuoka, Yuyan Li}
+\subject{Machine Learning for Computer Vision}
+\title{Exercise 11}
+% \subtitle{}
+\date{July 14, 2017}
+
+
+\begin{document}
+
+\maketitle
+
+Our program is found in \cref{lst:code}
+
+\section{Forward Pass}
+
+Our neural network is given by
+
+\[
+  z = sigmoid(\sin(\phi) \cdot x_0 + \cos(\phi) \cdot x_1 + r).
+\]
+
+We do a binary classification with the probabilities
+
+\[ p(y=0)=z \quad \text{and} \quad p(y=1)=1-z \]
+
+
+
+\section{Fischer Matrix}
+
+The entries of the Fischer matrix are given by
+
+\[
+  F_{a,b} = \sum_{x \in X} \sum_{y \in \{0,1\}} \left( \pdv{}{a} \log p(y|x) \right) \left( \pdv{}{b} \log p(y|x) \right) p(y|x)
+\]
+
+We need the derivatives of $z(x;\phi,r)$ with respect to $\phi$ and $r$.
+
+\[
+  \pdv{z}{\phi} = \left( x_0 \cos(\phi) - x_1 \sin(\phi) \right) \cdot sigmoid'(\sin(\phi) \cdot x_0 + \cos(\phi) \cdot x_1 + r)
+\]
+
+\[
+  \pdv{z}{r} = sigmoid'(\sin(\phi) \cdot x_0 + \cos(\phi) \cdot x_1 + r)
+\]
+
+The derivative of the sigmoid is given by:
+\[
+  sigmoid'(x) = sigmoid(x) \cdot (1 - sigmoid(x))
+\]
+
+With these we can compute the Fischer matrix entries:
+
+\[
+  F_{\phi \phi} = \sum_{x \in X} \frac{\pdv{z}{\phi}^2}{z(1-z)}
+\]
+\[
+  F_{rr} = \sum_{x \in X} \frac{\pdv{z}{r}^2}{z(1-z)}
+\]
+\[
+  F_{\phi r} = \sum_{x \in X} \frac{\left( \pdv{z}{\phi} \pdv{z}{r} \right)^2}{z(1-z)}
+\]
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=.49\linewidth]{heatmaps_a}
+  \includegraphics[width=.49\linewidth]{heatmaps_b}
+  \caption{The heatmaps show the values of the loss and the Fischer matrix entries of the two datasets A (left) and B (right). The plots are made with N=M=50 and a sample size for each class of $N_{data}=100$}
+  \label{fig:hm}
+\end{figure}
+
+
+\clearpage
+\lstinputlisting[caption=fischer.py,label=lst:code]{fischer.py}
+
+\end{document}
+
+
