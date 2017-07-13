@@ -18,9 +18,11 @@ def nn(x, phi, r):
 def derivative(x, phi, r):
     return sig_deriv(np.sin(phi) * x[:,0] + np.cos(phi) * x[:,1] + r)
 
+# Derivative dz/dphi
 def dzdp(x, phi, r):
     return (np.cos(phi) * x[:,0] - np.sin(phi) * x[:,1]) * derivative(x, phi, r)
 
+# Derivative dz/dr
 def dzdr(x, phi, r):
     return derivative(x, phi, r)
 
@@ -40,12 +42,14 @@ def fischerPR(x, phi, r):
     return sum(f)
 
 
-# Cross entropy loss function
-def loss(z, gt):
-    l = gt * np.log(z) + (1 - gt) * np.log(1 - z)
+# Cross entropy loss function, prediction z and ground truth y
+def loss(z, y):
+    l = y * np.log(z) + (1 - y) * np.log(1 - z)
     return - sum(l) / l.size
 
-
+# =========================================================
+# === Make heat maps of Loss and Fischer Matrix Entries ===
+# =========================================================
 def makefig(NData, mean, N, M, dataset=""):
     Cov = [[1,0],
            [0,1]]
@@ -70,8 +74,8 @@ def makefig(NData, mean, N, M, dataset=""):
         for ir, r in enumerate(r_list):
             z1 = nn(class1[:,], phi, r)
             z2 = nn(class2[:,], phi, r)
-            l1[ip, ir] = loss(z1, np.zeros(NData))
-            l2[ip, ir] = loss(z2, np.ones(NData))
+            l1[ip, ir] = loss(z1, 0.0)
+            l2[ip, ir] = loss(z2, 1.0)
 
             fpp[ip, ir] = fischerPP(class1[:,], phi, r) + fischerPP(class2[:,], phi, r)
             frr[ip, ir] = fischerRR(class1[:,], phi, r) + fischerRR(class2[:,], phi, r)
@@ -97,15 +101,16 @@ def makefig(NData, mean, N, M, dataset=""):
 
     return fig
 
-N = 50
-M = 50
-NData = 100
-meanA = [[1, 1], [1, 2]]
-meanB = [[6, 1], [6, 2]]
+if __name__=="__main__":
+    N = 50
+    M = 50
+    NData = 100
+    meanA = [[1, 1], [1, 2]]
+    meanB = [[6, 1], [6, 2]]
 
-figA = makefig(NData, meanA, N, M, "A")
-figA.savefig("heatmaps_a.png", bbox_inches='tight')
-figB = makefig(NData, meanB, N, M, "B")
-figB.savefig("heatmaps_b.png", bbox_inches='tight')
+    figA = makefig(NData, meanA, N, M, "A")
+    figA.savefig("heatmaps_a.png", bbox_inches='tight')
+    figB = makefig(NData, meanB, N, M, "B")
+    figB.savefig("heatmaps_b.png", bbox_inches='tight')
 
-# plt.show()
+
