@@ -29,6 +29,11 @@ We do a binary classification with the probabilities
 
 \[ p(y=0)=z \quad \text{and} \quad p(y=1)=1-z \]
 
+For the loss we use cross entropy, The loss of output $z$ with ground truth $y$ is
+
+\[
+  loss(z,y) = y \log(z) + (1 - y) \log(1-z).
+\]
 
 
 \section{Fischer Matrix}
@@ -65,6 +70,8 @@ With these we can compute the Fischer matrix entries:
 \[
   F_{\phi r} = \sum_{x \in X} \frac{\left( \pdv{z}{\phi} \pdv{z}{r} \right)^2}{z(1-z)}
 \]
+
+We plot the loss and the Fischer matrizes as heat maps for various $\phi$ and $r$ in \cref{fig:hm}.
 
 \begin{figure}[h]
   \centering

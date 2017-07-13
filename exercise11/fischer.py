@@ -40,11 +40,10 @@ def fischerPR(x, phi, r):
     return sum(f)
 
 
-# Entropy loss function
+# Cross entropy loss function
 def loss(z, gt):
-    n = z.size
     l = gt * np.log(z) + (1 - gt) * np.log(1 - z)
-    return - sum(l) / n
+    return - sum(l) / l.size
 
 
 def makefig(NData, mean, N, M, dataset=""):
@@ -85,14 +84,16 @@ def makefig(NData, mean, N, M, dataset=""):
     results = [l, fpp, frr, fpr]
     titles = ["Loss", "$F_{\phi \phi}$", "$F_{rr}$", "$F_{\phi r}$"]
 
-    fig, ax = plt.subplots(2, 2)
-    for i, a in enumerate(ax.ravel()):
-        a.imshow(results[i], origin='lower', extent=[-5, 5, 0, 2*np.pi], aspect=5/np.pi)
-        a.set_title(titles[i])
-        a.set_xlabel("r")
-        a.set_ylabel("$\phi$")
+    fig = plt.figure()
+    for i, res in enumerate(results):
+        plt.subplot(2, 2, i+1)
+        plt.imshow(res, origin='lower', extent=[-5, 5, 0, 2*np.pi], aspect=5/np.pi, interpolation='nearest')
+        plt.colorbar()
+        plt.title(titles[i])
+        plt.xlabel("r")
+        plt.ylabel("$\phi$")
     fig.suptitle(f"Heatmaps for dataset {dataset}")
-    fig.tight_layout()
+    fig.subplots_adjust(wspace=0.3, hspace=0.5)
 
     return fig
 
