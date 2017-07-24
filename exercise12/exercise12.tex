@@ -1,0 +1,56 @@
+\documentclass[12pt,a4paper]{scrartcl}
+
+\input{../header.tex}
+
+\author{Kodai Matsuoka, Yuyan Li}
+\subject{Machine Learning for Computer Vision}
+\title{Exercise 12}
+% \subtitle{}
+\date{24.07.2017}
+
+
+\begin{document}
+
+\maketitle
+
+\section{Results}
+
+\subsection{Distribution of rewards}
+Change of distribution of reward and threshold is shown in figure 1 and 2.
+
+\begin{figure}
+	\centering
+	\caption{Change of distribution of reward, 300 n\_samples, 50 percentile}
+   \includegraphics[width=15cm]{result1.png}
+\end{figure}
+
+
+\begin{figure}
+	\centering
+	\caption{Chanege of threshold, 300 n\_samples, 50 percentile}
+    \includegraphics[width=15cm]{result2.png}
+\end{figure}
+
+As iterations are repeated, the distribution moves towards positive direction. The distribution makes no more improve after 15 iteration.
+
+\subsection{How the algorithm performance changes if we change n\_samples and percentile}
+We used 200, 500 and 1000 n\_samples. For each case, we changed percentile from 10\% to 90\% . The result is shown in Figure3.
+When n\_samples = 200, mean reward was never above 0. If number of samples are enough many (500, 1000), we got satisfying result most of the time. However percetile should be chosen between 20\% and 80\%.
+
+
+\begin{figure}
+	\centering
+	\caption{The relation between percentile and mean reward with defferent n\_samples}
+    \includegraphics[width=15cm]{result3.png}
+\end{figure}
+
+\subsection{Tune the algorithm \& Bonus}
+We achieved both positive mean reward and 25\% of samples above +9.0 with 1000 n\_samples using 50\% samples for learning. In this setting, the mean reward was +3.9, and 28\% of samples were above +9.0.
+
+
+% \lstinputlisting[language=LANG,caption=CAPTION,label=lst:LABEL]{PATH/TO/CODE.file}
+
+\section{Code}
+\lstinputlisting[linerange={1-72}]{exercise12.py}
+
+\end{document}
